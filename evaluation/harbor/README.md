@@ -1,0 +1,109 @@
+# Harbor evals: does an agent do better work with the skill?
+
+Each skill is measured on [Harbor](https://github.com/laude-institute/harbor) tasks, in
+two arms that differ only by the skill:
+
+| arm | what the agent gets |
+|---|---|
+| `no_skill` | the task instruction |
+| `with_skill` | the same, plus `--skill skills/<name>` and [`instructions/use-<name>.md`](instructions/) appended |
+
+Same image, agent, model, Claude Code version, settings, timeouts and attempt count in
+both arms. The treatment instruction says a skill is installed and to read it, and
+nothing else, so `with_skill` measures the skill's body rather than whether its
+description gets it loaded. The layout and arm design follow
+[intel/skills `evaluation/harbor/`](https://github.com/intel/skills/tree/main/evaluation/harbor).
+
+## How the tasks are written
+
+- **The instruction is a user request, not a hint.** It states the symptom, the
+  constraints and the deliverable. It never names the pattern, the fix, the library or
+  the instruction set; if it did, any model would pass and the task would measure
+  nothing.
+- **The verifier checks the outcome.** Executable tasks build the agent's library and
+  time it with the verifier's own harness against a reference baseline timed in the
+  same run, so the gate is a ratio and survives a loaded host. Correctness is checked
+  against a bitwise or `std::sort` reference over many lengths and alignments.
+- **Speed gates are calibrated, not guessed.** Each gate sits between what a strong
+  engineer writes without the skill and what the skill's guidance produces, both
+  measured on the reference host (Xeon Platinum 8480+, Sapphire Rapids). The gate
+  is relaxed on CPUs without the relevant ISA; see each `tests/verify.py`.
+- **Conventions are recorded, not rewarded.** A check for something the skill
+  prefers but the instruction does not ask for (Flow E's 5% table cutoff, TTAS as
+  the only acceptable lock fix) is listed in `INFORMATIONAL` in its `verify.py`:
+  written to `reward.json`, left out of `reward`.
+- **No live `perf`.** linux-perf tasks ship recorded `perf stat` / `report` /
+  `annotate` / `c2c` output (synthetic, with no real host names or paths), so no
+  task needs a privileged container, `CAP_PERFMON` or `perf_event_open`.
+- **Network:** the environment and agent are `public` (image build, model API, and the
+  agent may fetch third-party code); the verifier runs with `no-network`.
+
+## Tasks
+
+| task | skill | asks for | verifier |
+|---|---|---|---|
+| [`pp-crc32c-throughput`](tasks/pp-crc32c-throughput/) | performance-patterns | make a byte-table `crc32c()` as fast as possible, one build for the whole fleet | correctness vs bitwise CRC32C; runtime dispatch present; ≥ 5x a single-chain `_mm_crc32_u64` |
+| [`pp-hamming-search`](tasks/pp-hamming-search/) | performance-patterns | speed up Hamming distance over 4096-bit codes | correctness; dispatch; ≥ 2.75x a single-chain `popcnt` at 512 B |
+| [`pp-simd-sort`](tasks/pp-simd-sort/) | performance-patterns | speed up a single-threaded sort of 1M floats, self-contained static library | equal to `std::sort`; dispatch; single-threaded; ≥ 12x `std::sort` |
+| [`pp-source-review`](tasks/pp-source-review/) | performance-patterns | review a module for performance problems before shipping | ≥ 7 of 10 seeded issues found by line range; ≤ 1 of 4 decoys flagged |
+| [`lp-hotspot-report`](tasks/lp-hotspot-report/) | linux-perf | a shareable hotspot report from recorded profiles | top-functions table; source-line % for both hot functions; serial accumulator, scalar FP and false sharing named; report-only |
+| [`lp-c2c-contention`](tasks/lp-c2c-contention/) | linux-perf | what to change, from a recorded `perf c2c` report | the lines above 5% Tot Hitm, each classified true/false sharing with fields and fix |
+| [`lp-scaling-bottleneck`](tasks/lp-scaling-bottleneck/) | linux-perf | why a service stops scaling, from 1- and 32-thread profiles | the two functions whose share jumps (not the hottest one), their category, and `perf c2c` next |
+
+## Running
+
+```bash
+# credentials for Bedrock: CLAUDE_CODE_USE_BEDROCK=1, AWS_REGION, AWS_BEARER_TOKEN_BEDROCK
+HARBOR_TELEMETRY=off harbor run -p evaluation/harbor/tasks -a oracle -o evaluation/harbor/jobs \
+    --job-name oracle --yes                                    # every task must score 1.0
+evaluation/harbor/run_arms.sh performance-patterns <model> 3   # both arms, all its tasks
+TASKS="pp-crc32c-throughput" evaluation/harbor/run_arms.sh performance-patterns <model> 3
+python3 evaluation/harbor/report.py evaluation/harbor/jobs/<prefix>-<skill>-{no_skill,with_skill} \
+    --out evaluation/harbor/results/<prefix>-<skill>
+```
+
+## Results — 2026-10-18
+
+Harbor 0.24.0, `claude-code` 2.1.296, skills at 3e33aec. Pass = every required check.
+Haiku is `us.anthropic.claude-haiku-5-5`, Sonnet `us.anthropic.claude-sonnet-5-5`.
+No trial errored.
+
+| task | model | no_skill | with_skill | what separates the arms |
+|---|---|---|---|---|
+| pp-crc32c-throughput | Haiku | 0/5 | **5/5** | no_skill stops at a 3-way `crc32` interleave (2.8x, 22 GB/s); with_skill uses the skill's VPCLMULQDQ fusion file (11.9x, 95 GB/s) |
+| | Sonnet | 0/3 | **3/3** | same |
+| lp-hotspot-report | Haiku | 1/5 | **5/5** | no_skill reports instruction-level percentages from `perf annotate` and omits per-source-line attribution for one or both hot functions |
+| | Sonnet | 1/3 | **3/3** | same |
+| pp-hamming-search | Haiku | 3/5 | **5/5** | 2 of 5 no_skill attempts stop at 1.6–1.7x; every with_skill attempt reaches 3.4–4.0x |
+| | Sonnet | 3/3 | 3/3 | ceiling: Sonnet finds VPOPCNTDQ without the skill |
+| pp-source-review | Haiku | 2/3 | 3/3 | recall 7.0 → 9.3 of 10; `restrict` found 0/3 → 3/3; the 4-accumulator decoy flagged 2/3 → 0/3 |
+| pp-simd-sort | Haiku | 1/3 | 2/3 | with_skill reaches x86-simd-sort (21x) in 2/3, no_skill once (23x); the other attempts reach 6–9x |
+| lp-c2c-contention | Haiku | 0/3 | 2/3 | classification and fixes equal in both arms; only the 5% threshold separates them |
+| lp-scaling-bottleneck | Haiku | 2/3 | 2/3 | ceiling: both arms find the two jumping functions and pick `perf c2c` |
+
+The first two rows are the evidence that the skills change outcomes on both models.
+Hamming discriminates for Haiku only. Source review, sort and c2c point the right way
+at k=3 but are too close to call; scaling does not discriminate and is kept as a smoke
+task.
+
+Two task bugs were found by reading trials and fixed before the numbers above: the
+sort instruction implied no download was possible (both arms gave up on third-party
+code; re-run after the fix), and the hotspot verifier accepted a source-line
+percentage only when the source text was quoted, not `line 16` / `score.c:16` (all
+hotspot trials re-graded from their trajectories).
+
+## Skill defects these tasks surfaced
+
+- `performance-patterns/patterns/fast-crc32c-impl.md`: the compile line for
+  `crc32c_avx512_vpclmulqdq.c` lacks `-mpclmul -msse4.2`; GCC 13 fails with
+  "inlining failed in call to `_mm_clmulepi64_si128`".
+- `performance-patterns/references/known-algorithms-impl.md`: the AVX-512 Hamming and
+  Jaccard rows use `_mm512_popcnt_epi8` (AVX512_BITALG) under an `avx512vpopcntdq`-only
+  guard; `_mm512_popcnt_epi64` needs no widening. Its GB/s figures are low by ~3x
+  (POPCNT) and ~1.3x (AVX-512) on Sapphire Rapids.
+- `performance-patterns/patterns/simd-sort.md`: Option B (copy one header) does not
+  compile on its own; Option A does not say `-Dlib_type=static`, and assumes meson and
+  `sudo`.
+- `linux-perf`: Flow A, Flow E and SKILL.md disagree on how to read low IPC with low
+  miss rates; flow-c.md's "same field name means true sharing" conflicts with the
+  offset rule in building-blocks.md; the intro lists flows A–C of A–E.
