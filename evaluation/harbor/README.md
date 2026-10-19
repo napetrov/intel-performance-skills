@@ -94,16 +94,16 @@ hotspot trials re-graded from their trajectories).
 
 ## Skill defects these tasks surfaced
 
-- `performance-patterns/patterns/fast-crc32c-impl.md`: the compile line for
+- [#7](https://github.com/intel/intel-performance-skills/issues/7) `performance-patterns/patterns/fast-crc32c-impl.md`: the compile line for
   `crc32c_avx512_vpclmulqdq.c` lacks `-mpclmul -msse4.2`; GCC 13 fails with
   "inlining failed in call to `_mm_clmulepi64_si128`".
-- `performance-patterns/references/known-algorithms-impl.md`: the AVX-512 Hamming and
+- [#8](https://github.com/intel/intel-performance-skills/issues/8) `performance-patterns/references/known-algorithms-impl.md`: the AVX-512 Hamming and
   Jaccard rows use `_mm512_popcnt_epi8` (AVX512_BITALG) under an `avx512vpopcntdq`-only
   guard; `_mm512_popcnt_epi64` needs no widening. Its GB/s figures are low by ~3x
   (POPCNT) and ~1.3x (AVX-512) on Sapphire Rapids.
-- `performance-patterns/patterns/simd-sort.md`: Option B (copy one header) does not
+- [#9](https://github.com/intel/intel-performance-skills/issues/9) `performance-patterns/patterns/simd-sort.md`: Option B (copy one header) does not
   compile on its own; Option A does not say `-Dlib_type=static`, and assumes meson and
   `sudo`.
-- `linux-perf`: Flow A, Flow E and SKILL.md disagree on how to read low IPC with low
+- [#10](https://github.com/intel/intel-performance-skills/issues/10) `linux-perf`: Flow A, Flow E and SKILL.md disagree on how to read low IPC with low
   miss rates; flow-c.md's "same field name means true sharing" conflicts with the
   offset rule in building-blocks.md; the intro lists flows A–C of A–E.
