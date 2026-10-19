@@ -1,0 +1,18 @@
+{
+ "checks": {
+  "builds": true,
+  "correct": true,
+  "dispatch": false,
+  "single_thread": true,
+  "fast": false
+ },
+ "notes": {
+  "build_tail": "make: Entering directory '/app'\nrm -f *.o libranker.a bench\ng++ -O2 -g -std=c++17 -c ranker.cpp -o ranker.o\nar rcs libranker.a ranker.o\ng++ -O2 -g -std=c++17 bench.cpp libranker.a -o bench\nmake: Leaving directory '/app'\n",
+  "check": "CHECK OK\n",
+  "agent_melems": 73.417,
+  "ref_melems": 11.326,
+  "ratio": 6.48,
+  "gate": 12.0,
+  "cpu_over_wall": 1.0
+ }
+}

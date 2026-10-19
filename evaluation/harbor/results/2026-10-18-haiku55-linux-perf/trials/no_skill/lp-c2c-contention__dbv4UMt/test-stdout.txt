@@ -1,0 +1,25 @@
+{
+ "checks": {
+  "valid_json": true,
+  "reported_lines": false,
+  "l0_false": true,
+  "l1_true": true,
+  "l2_true": true,
+  "l0_fields": true,
+  "l0_fix": true,
+  "l1_fix": true,
+  "l2_fix": false
+ },
+ "notes": {
+  "listed": [
+   "0x7f3b2c001080",
+   "0x5603c1a8e200",
+   "0x5603c1a8e380",
+   "0x5603c1a8e100",
+   "0x7f3b2c041100"
+  ],
+  "l0_fix": "The parser thread writes parsed and the flusher thread writes flushed and flush_bytes, which are different fields in the same line. This is the largest share of HITMs (about 39%) but does not scale wi",
+  "l1_fix": "Every request does an atomic fetch_add on g_counters.requests from all workers (about 96% of this line's HITMs). Keep per-worker counters, each on its own 128-byte-aligned line, and sum them when /met",
+  "l2_fix": "All 24 workers spin on one CAS lock to pop, so every pop moves the line between cores and the spinners burn CPU. Replace the single queue with per-worker queues plus stealing, or a lock-free ring that"
+ }
+}

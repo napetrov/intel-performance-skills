@@ -1,0 +1,25 @@
+{
+ "checks": {
+  "valid_json": true,
+  "reported_lines": false,
+  "l0_false": true,
+  "l1_true": true,
+  "l2_true": true,
+  "l0_fields": true,
+  "l0_fix": true,
+  "l1_fix": true,
+  "l2_fix": false
+ },
+ "notes": {
+  "listed": [
+   "0x5603c1a8e100",
+   "0x5603c1a8e200",
+   "0x7f3b2c001080",
+   "0x5603c1a8e380",
+   "0x7f3b2c041100"
+  ],
+  "l0_fix": "The parser thread writes parsed/parse_errors and the flusher thread writes flushed/flush_bytes, all on one 128-byte group. Give each thread's counters their own cache-line-aligned struct (or keep thre",
+  "l1_fix": "Every worker does an atomic add on requests in count_request, so the counter itself is contended; shard it per worker and sum it when /metrics reads it. Move max_inflight, which is read-only after sta",
+  "l2_fix": "All 24 workers and the listener take the same test-and-set spinlock, so pops are fully serialized and the spinning burns CPU, which is why adding workers raises CPU without raising throughput. Replace"
+ }
+}

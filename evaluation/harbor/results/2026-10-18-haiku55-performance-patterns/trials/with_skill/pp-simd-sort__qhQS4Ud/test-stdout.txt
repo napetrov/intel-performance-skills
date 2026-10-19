@@ -1,0 +1,18 @@
+{
+ "checks": {
+  "builds": true,
+  "correct": true,
+  "dispatch": true,
+  "single_thread": true,
+  "fast": true
+ },
+ "notes": {
+  "build_tail": "32) _Float16]\u2019\n  144 |             reg, swizzle::template reverse_n<vtype, 16>(reg), oxFF00FF00);\n      |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~\nthird_party/x86-simd-sort/src/avx512fp16-16bit-qsort.hpp:148:52:   required from here\n  148 |         return sort_reg_32lanes<zmm_vector<type_t>>(x);\n      |                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~\nthird_party/x86-simd-sort/src/avx512-16bit-common.h:67:39: warning: sorry: semantics of inline function static data \u2018constexpr const uint16_t arr [32]\u2019 are wrong (you\u2019ll wind up with multiple copies)\n   67 |             constexpr static uint16_t arr[]\n      |                                       ^~~\nthird_party/x86-simd-sort/src/avx512-16bit-common.h:67:39: note: you can work around this by removing the initializer\n",
+  "check": "CHECK OK\n",
+  "agent_melems": 259.657,
+  "ref_melems": 12.355,
+  "ratio": 21.02,
+  "gate": 12.0,
+  "cpu_over_wall": 1.001
+ }
+}

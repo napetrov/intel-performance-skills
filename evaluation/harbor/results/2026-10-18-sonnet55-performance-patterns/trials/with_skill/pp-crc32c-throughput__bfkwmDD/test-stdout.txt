@@ -1,0 +1,16 @@
+{
+ "checks": {
+  "builds": true,
+  "correct": true,
+  "dispatch": true,
+  "fast": true
+ },
+ "notes": {
+  "build_tail": "make: Entering directory '/app'\nrm -f *.o libcrc32c.a bench\ncc -O2 -g -c crc32c.c -o crc32c.o\ncc -O2 -g -mavx512f -mavx512vl -mvpclmulqdq -mpclmul -msse4.2 -c crc32c_avx512.c -o crc32c_avx512.o\ncc -O2 -g -msse4.2 -mpclmul -c crc32c_sse42.c -o crc32c_sse42.o\ncc -O2 -g -c crc32c_portable.c -o crc32c_portable.o\nar rcs libcrc32c.a crc32c.o crc32c_avx512.o crc32c_sse42.o crc32c_portable.o\ncc -O2 -g bench.c libcrc32c.a -o bench\nmake: Leaving directory '/app'\n",
+  "check": "CHECK OK\n",
+  "agent_gbps": 94.524,
+  "ref_gbps": 7.977,
+  "ratio": 11.85,
+  "gate": 5.0
+ }
+}

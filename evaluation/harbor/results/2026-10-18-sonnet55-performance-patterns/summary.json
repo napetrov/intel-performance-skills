@@ -1,0 +1,218 @@
+{
+  "schema_version": "1.1",
+  "skill": "performance-patterns",
+  "skill_behavior_sha256": "a1016a874b6fc948f576af2dea42926ab2e2f4ed6edd31c231abf605d80167dc",
+  "repo_commit": "3e33aecabb956ec48526b3f842f4f70ae96d98ff",
+  "repo_dirty": null,
+  "graded_at": "0ddcd93e87584ffd86903c84fa2735834d845cc0",
+  "graded_dirty": false,
+  "measured_on": "2026-10-18",
+  "started_at": "2026-10-18T22:29:27.961143",
+  "harbor": "0.24.0",
+  "agent": "claude-code",
+  "agent_version": "2.1.296",
+  "model": "us.anthropic.claude-sonnet-5-5",
+  "attempts_per_task": 3,
+  "arms": {
+    "no_skill": "task instruction only",
+    "with_skill": "--skill skills/performance-patterns + instructions/use-performance-patterns.md"
+  },
+  "tasks": {
+    "pp-crc32c-throughput": {
+      "no_skill": {
+        "trials": 3,
+        "errored": 0,
+        "reward_mean": 0.0,
+        "rewards": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "checks": {
+          "builds": 1.0,
+          "correct": 1.0,
+          "dispatch": 1.0,
+          "fast": 0.0
+        },
+        "cost_usd": {
+          "median": 0.0640664,
+          "min": 0.0630477,
+          "max": 0.1107394
+        },
+        "input_tokens": {
+          "median": 90526,
+          "min": 90401,
+          "max": 90756
+        },
+        "cache_tokens": {
+          "median": 85392,
+          "min": 65609,
+          "max": 85679
+        },
+        "output_tokens": {
+          "median": 4199,
+          "min": 4189,
+          "max": 4281
+        },
+        "agent_s": {
+          "median": 38.381935,
+          "min": 38.171956,
+          "max": 39.249244
+        },
+        "skill_calls": [
+          0,
+          0,
+          0
+        ],
+        "skill_files_read": []
+      },
+      "with_skill": {
+        "trials": 3,
+        "errored": 0,
+        "reward_mean": 1.0,
+        "rewards": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "checks": {
+          "builds": 1.0,
+          "correct": 1.0,
+          "dispatch": 1.0,
+          "fast": 1.0
+        },
+        "cost_usd": {
+          "median": 0.0834941,
+          "min": 0.06056840000000001,
+          "max": 0.0902308
+        },
+        "input_tokens": {
+          "median": 173148,
+          "min": 123954,
+          "max": 182463
+        },
+        "cache_tokens": {
+          "median": 157068,
+          "min": 116359,
+          "max": 168836
+        },
+        "output_tokens": {
+          "median": 3255,
+          "min": 2995,
+          "max": 3433
+        },
+        "agent_s": {
+          "median": 33.595837,
+          "min": 25.258589,
+          "max": 35.519677
+        },
+        "skill_calls": [
+          1,
+          1,
+          1
+        ],
+        "skill_files_read": [
+          "library"
+        ]
+      },
+      "delta_reward": 1.0
+    },
+    "pp-hamming-search": {
+      "no_skill": {
+        "trials": 3,
+        "errored": 0,
+        "reward_mean": 1.0,
+        "rewards": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "checks": {
+          "builds": 1.0,
+          "correct": 1.0,
+          "dispatch": 1.0,
+          "fast": 1.0
+        },
+        "cost_usd": {
+          "median": 0.054811900000000004,
+          "min": 0.052506399999999995,
+          "max": 0.0741281
+        },
+        "input_tokens": {
+          "median": 88992,
+          "min": 87087,
+          "max": 114239
+        },
+        "cache_tokens": {
+          "median": 84904,
+          "min": 82734,
+          "max": 106831
+        },
+        "output_tokens": {
+          "median": 3566,
+          "min": 3380,
+          "max": 4493
+        },
+        "agent_s": {
+          "median": 29.481735,
+          "min": 27.00974,
+          "max": 43.48181
+        },
+        "skill_calls": [
+          0,
+          0,
+          0
+        ],
+        "skill_files_read": []
+      },
+      "with_skill": {
+        "trials": 3,
+        "errored": 0,
+        "reward_mean": 1.0,
+        "rewards": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "checks": {
+          "builds": 1.0,
+          "correct": 1.0,
+          "dispatch": 1.0,
+          "fast": 1.0
+        },
+        "cost_usd": {
+          "median": 0.08578820000000001,
+          "min": 0.0692459,
+          "max": 0.0920632
+        },
+        "input_tokens": {
+          "median": 136828,
+          "min": 96455,
+          "max": 164444
+        },
+        "cache_tokens": {
+          "median": 121482,
+          "min": 89124,
+          "max": 152367
+        },
+        "output_tokens": {
+          "median": 4201,
+          "min": 3528,
+          "max": 4664
+        },
+        "agent_s": {
+          "median": 37.098692,
+          "min": 30.318253,
+          "max": 38.331882
+        },
+        "skill_calls": [
+          1,
+          1,
+          1
+        ],
+        "skill_files_read": []
+      },
+      "delta_reward": 0.0
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+ "checks": {
+  "valid_json": true,
+  "jumpers_found": true,
+  "no_other_functions": true,
+  "lock_category": true,
+  "counter_category": true,
+  "next_is_c2c": true
+ },
+ "notes": {
+  "listed": {
+   "ring_lock_acquire": "lock_spin",
+   "batch_commit": "shared_counter"
+  },
+  "extra_functions": [],
+  "next_measurement": "On the production host, with the same replay capture at --threads 32, run `perf c2c record -g -- ingestd --replay <capture> --threads 32` and then `perf c2c report --stdio -NN`. Expect cross-core HITM concentrated on the `struct ring` line (r->lock/head/tail, touched by ring_lock_acquire, ring_pop, "
+ }
+}

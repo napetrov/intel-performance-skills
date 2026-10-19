@@ -1,0 +1,68 @@
+{
+ "checks": {
+  "valid_json": true,
+  "recall": true,
+  "decoy_false_positives": true
+ },
+ "notes": {
+  "found": [
+   "crc32c",
+   "cv_notify_all",
+   "false_sharing",
+   "hamming",
+   "missing_restrict",
+   "missing_vzeroupper",
+   "serial_accumulator",
+   "shared_stats_counter",
+   "simd_sort",
+   "tas_spinlock"
+  ],
+  "missed": [],
+  "decoys_flagged": [],
+  "n_findings": 12,
+  "ranges": {
+   "serial_accumulator": [
+    "kernels.c:47-56"
+   ],
+   "missing_restrict": [
+    "kernels.c:110-117",
+    "scoring.h:22-23"
+   ],
+   "missing_vzeroupper": [
+    "kernels.c:126-143",
+    "pool.cpp:267-268"
+   ],
+   "crc32c": [
+    "kernels.c:18-30",
+    "kernels.c:32-41",
+    "pool.cpp:88-88"
+   ],
+   "hamming": [
+    "kernels.c:149-157",
+    "pool.cpp:261-261"
+   ],
+   "tas_spinlock": [
+    "pool.cpp:36-48"
+   ],
+   "false_sharing": [
+    "pool.cpp:242-245",
+    "pool.cpp:289-290"
+   ],
+   "shared_stats_counter": [
+    "pool.cpp:72-73",
+    "pool.cpp:97-98",
+    "pool.cpp:274-274"
+   ],
+   "cv_notify_all": [
+    "pool.cpp:199-206",
+    "pool.cpp:224-224"
+   ],
+   "simd_sort": [
+    "pool.cpp:156-160",
+    "pool.cpp:232-232"
+   ]
+  },
+  "recall": "10/10 (need 7)",
+  "decoy_fp": "0/4 (max 1)"
+ }
+}

@@ -1,0 +1,18 @@
+{
+ "checks": {
+  "builds": true,
+  "correct": true,
+  "dispatch": true,
+  "single_thread": true,
+  "fast": true
+ },
+ "notes": {
+  "build_tail": "make: Entering directory '/app'\nrm -f *.o libranker.a bench\ng++ -O2 -g -std=c++17 -c ranker.cpp -o ranker.o\ng++ -O2 -g -std=c++17 -march=skylake-avx512 -c ranker_avx512.cpp -o ranker_avx512.o\nar rcs libranker.a ranker.o ranker_avx512.o\ng++ -O2 -g -std=c++17 bench.cpp libranker.a -o bench\nmake: Leaving directory '/app'\n",
+  "check": "CHECK OK\n",
+  "agent_melems": 226.632,
+  "ref_melems": 9.759,
+  "ratio": 23.22,
+  "gate": 12.0,
+  "cpu_over_wall": 1.001
+ }
+}

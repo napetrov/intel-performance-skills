@@ -59,7 +59,7 @@ HARBOR_TELEMETRY=off harbor run -p evaluation/harbor/tasks -a oracle -o evaluati
 evaluation/harbor/run_arms.sh performance-patterns <model> 3   # both arms, all its tasks
 TASKS="pp-crc32c-throughput" evaluation/harbor/run_arms.sh performance-patterns <model> 3
 python3 evaluation/harbor/report.py evaluation/harbor/jobs/<prefix>-<skill>-{no_skill,with_skill} \
-    --out evaluation/harbor/results/<prefix>-<skill>
+    --out evaluation/harbor/results/<prefix>-<skill>       # also writes skills/<skill>/evals/benchmarks/
 ```
 
 ## Results — 2026-10-18
@@ -80,6 +80,11 @@ No trial errored.
 | pp-simd-sort | Haiku | 1/3 | 2/3 | with_skill reaches x86-simd-sort (21x) in 2/3, no_skill once (23x); the other attempts reach 6–9x |
 | lp-c2c-contention | Haiku | 0/3 | 2/3 | classification and fixes equal in both arms; only the 5% threshold separates them |
 | lp-scaling-bottleneck | Haiku | 2/3 | 2/3 | ceiling: both arms find the two jumping functions and pick `perf c2c` |
+
+Per-trial evidence (Harbor's `result.json`, each verifier's `reward.json` and output)
+and generated tables are in [`results/<date>-<model>-<skill>/`](results/); the same runs
+in skill-creator's schema are in `skills/<skill>/evals/benchmarks/<date>-<model>/benchmark.json`,
+where catalogs look for them. Re-graded trials keep Harbor's originals as `*.harbor.*`.
 
 The first two rows are the evidence that the skills change outcomes on both models.
 Hamming discriminates for Haiku only. Source review, sort and c2c point the right way

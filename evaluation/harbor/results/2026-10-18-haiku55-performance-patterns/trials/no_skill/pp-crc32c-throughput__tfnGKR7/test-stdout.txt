@@ -1,0 +1,16 @@
+{
+ "checks": {
+  "builds": true,
+  "correct": true,
+  "dispatch": true,
+  "fast": false
+ },
+ "notes": {
+  "build_tail": "make: Entering directory '/app'\nrm -f *.o libcrc32c.a bench\ncc -O2 -g -c crc32c.c -o crc32c.o\nar rcs libcrc32c.a crc32c.o\ncc -O2 -g bench.c libcrc32c.a -o bench\nmake: Leaving directory '/app'\n",
+  "check": "CHECK OK\n",
+  "agent_gbps": 21.479,
+  "ref_gbps": 7.961,
+  "ratio": 2.7,
+  "gate": 5.0
+ }
+}

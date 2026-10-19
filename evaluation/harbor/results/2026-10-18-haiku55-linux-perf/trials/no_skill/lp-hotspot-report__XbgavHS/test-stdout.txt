@@ -1,0 +1,33 @@
+{
+ "checks": {
+  "report_written": true,
+  "top_table": true,
+  "top_table_cutoff": false,
+  "annotated_hot_line": false,
+  "annotated_second_function": false,
+  "serial_accumulator": true,
+  "scalar_fp": true,
+  "false_sharing": true,
+  "no_fix_claims": true,
+  "sources_untouched": true
+ },
+ "notes": {
+  "top_table": [
+   "| % cycles | Symbol | Where | Notes |",
+   "|---:|---|---|---|",
+   "| 58.42 | `accumulate_scores` | `score.c:12-19` | Serial FP reduction. See finding 1. |",
+   "| 18.77 | `worker_update_stats` | `worker.c:31-36` | False sharing on `g_stats`. See finding 2. |",
+   "| 7.11 | `__memmove_avx_unaligned_erms` | libc | 85% of it is `rep movsb`. Caller unknown. See finding 3. |",
+   "| 4.61 | `parse_record` | not in `/app/src` | Input parsing. |",
+   "| 2.10 | `futex_wait_queue` | kernel | Threads blocked on a lock or condition. |",
+   "| 1.88 | `read_block` | not in `/app/src` | Input reading. |",
+   "| 1.37 | `clear_page_erms` | kernel | Zeroing newly faulted pages. |",
+   "| 1.12 | `_int_malloc` | libc | |",
+   "| 0.96 | `copy_user_enhanced_fast_string` | kernel | Copy from kernel to user (reads). |",
+   "| 0.74 | `normalize_row` | not in `/app/src` | Declared in `score.c`, defined elsewhere. |"
+  ],
+  "fix_claim": null,
+  "regime_mentions_memory_bound": false,
+  "changed_sources": []
+ }
+}

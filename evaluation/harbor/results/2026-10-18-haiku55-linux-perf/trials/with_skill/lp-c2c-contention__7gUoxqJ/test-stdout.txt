@@ -1,0 +1,23 @@
+{
+ "checks": {
+  "valid_json": true,
+  "reported_lines": true,
+  "l0_false": true,
+  "l1_true": true,
+  "l2_true": true,
+  "l0_fields": true,
+  "l0_fix": true,
+  "l1_fix": true,
+  "l2_fix": true
+ },
+ "notes": {
+  "listed": [
+   "0x5603c1a8e100",
+   "0x5603c1a8e200",
+   "0x7f3b2c001080"
+  ],
+  "l0_fix": "Give the parser-written counters (parsed, parse_errors) and the flusher-written counters (flushed, flush_bytes) separate cache lines, e.g. two structs each alignas(128), so the parser and flusher stop",
+  "l1_fix": "Make requests a sharded counter: one padded slot per worker (each on its own 128-byte line) that /metrics sums on read, instead of one atomic that all 24 workers increment. Also move read-only max_inf",
+  "l2_fix": "Replace the CAS-only spin in wq_lock with test-and-test-and-set: spin on a plain load and attempt the CAS only when the lock reads 0, with a pause or backoff between attempts. Longer term, a lock-free"
+ }
+}

@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.1",
+  "skill": "linux-perf",
+  "skill_behavior_sha256": "f826553cb4f0f77a350eea8f4fbcc6842e30a6ef205049da1581c987334fed56",
+  "repo_commit": "3e33aecabb956ec48526b3f842f4f70ae96d98ff",
+  "repo_dirty": null,
+  "graded_at": "0ddcd93e87584ffd86903c84fa2735834d845cc0",
+  "graded_dirty": false,
+  "measured_on": "2026-10-18",
+  "started_at": "2026-10-18T22:29:28.245627",
+  "harbor": "0.24.0",
+  "agent": "claude-code",
+  "agent_version": "2.1.296",
+  "model": "us.anthropic.claude-sonnet-5-5",
+  "attempts_per_task": 3,
+  "arms": {
+    "no_skill": "task instruction only",
+    "with_skill": "--skill skills/linux-perf + instructions/use-linux-perf.md"
+  },
+  "tasks": {
+    "lp-hotspot-report": {
+      "no_skill": {
+        "trials": 3,
+        "errored": 0,
+        "reward_mean": 0.3333333333333333,
+        "rewards": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "checks": {
+          "annotated_hot_line": 0.3333333333333333,
+          "annotated_second_function": 0.6666666666666666,
+          "false_sharing": 1.0,
+          "no_fix_claims": 1.0,
+          "report_written": 1.0,
+          "scalar_fp": 1.0,
+          "serial_accumulator": 1.0,
+          "sources_untouched": 1.0,
+          "top_table": 1.0,
+          "top_table_cutoff": 1.0
+        },
+        "cost_usd": {
+          "median": 0.11801440000000002,
+          "min": 0.1126942,
+          "max": 0.13697620000000002
+        },
+        "input_tokens": {
+          "median": 104510,
+          "min": 100546,
+          "max": 129402
+        },
+        "cache_tokens": {
+          "median": 88352,
+          "min": 88032,
+          "max": 114544
+        },
+        "output_tokens": {
+          "median": 7261,
+          "min": 6942,
+          "max": 8775
+        },
+        "agent_s": {
+          "median": 63.573916,
+          "min": 62.027573,
+          "max": 73.583074
+        },
+        "skill_calls": [
+          0,
+          0,
+          0
+        ],
+        "skill_files_read": []
+      },
+      "with_skill": {
+        "trials": 3,
+        "errored": 0,
+        "reward_mean": 1.0,
+        "rewards": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "checks": {
+          "annotated_hot_line": 1.0,
+          "annotated_second_function": 1.0,
+          "false_sharing": 1.0,
+          "no_fix_claims": 1.0,
+          "report_written": 1.0,
+          "scalar_fp": 1.0,
+          "serial_accumulator": 1.0,
+          "sources_untouched": 1.0,
+          "top_table": 1.0,
+          "top_table_cutoff": 1.0
+        },
+        "cost_usd": {
+          "median": 0.11762800000000001,
+          "min": 0.10761989999999999,
+          "max": 0.1507717
+        },
+        "input_tokens": {
+          "median": 156666,
+          "min": 156657,
+          "max": 158799
+        },
+        "cache_tokens": {
+          "median": 136455,
+          "min": 134217,
+          "max": 141724
+        },
+        "output_tokens": {
+          "median": 5612,
+          "min": 5346,
+          "max": 7590
+        },
+        "agent_s": {
+          "median": 47.80684,
+          "min": 46.867011,
+          "max": 64.77442
+        },
+        "skill_calls": [
+          1,
+          1,
+          1
+        ],
+        "skill_files_read": [
+          "references",
+          "references/flow-e.md"
+        ]
+      },
+      "delta_reward": 0.6667
+    }
+  }
+}

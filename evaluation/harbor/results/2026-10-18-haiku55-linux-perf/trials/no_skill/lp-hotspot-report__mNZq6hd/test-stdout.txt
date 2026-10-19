@@ -1,0 +1,33 @@
+{
+ "checks": {
+  "report_written": true,
+  "top_table": true,
+  "top_table_cutoff": false,
+  "annotated_hot_line": false,
+  "annotated_second_function": false,
+  "serial_accumulator": true,
+  "scalar_fp": true,
+  "false_sharing": true,
+  "no_fix_claims": true,
+  "sources_untouched": true
+ },
+ "notes": {
+  "top_table": [
+   "| Overhead | DSO | Symbol | Notes |",
+   "|---:|---|---|---|",
+   "| 58.42% | solver | `accumulate_scores` | Scalar dot product, see below |",
+   "| 18.77% | solver | `worker_update_stats` | False sharing, see below |",
+   "| 7.11% | libc | `__memmove_avx_unaligned_erms` | 84.7% on one `rep movsb` (`perf_annotate_memmove.txt`) |",
+   "| 4.61% | solver | `parse_record` | Input parsing; source not in `/app/src` |",
+   "| 2.10% | kernel | `futex_wait_queue` | Blocking/wakeups |",
+   "| 1.88% | solver | `read_block` | Input; source not in `/app/src` |",
+   "| 1.37% | kernel | `clear_page_erms` | Fresh pages being zeroed |",
+   "| 1.12% | libc | `_int_malloc` | |",
+   "| 0.96% | kernel | `copy_user_enhanced_fast_string` | |",
+   "| 0.74% | solver | `normalize_row` | |"
+  ],
+  "fix_claim": null,
+  "regime_mentions_memory_bound": true,
+  "changed_sources": []
+ }
+}

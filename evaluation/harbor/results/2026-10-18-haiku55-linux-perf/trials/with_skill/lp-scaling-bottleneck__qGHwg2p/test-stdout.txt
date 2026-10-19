@@ -1,0 +1,21 @@
+{
+ "checks": {
+  "valid_json": true,
+  "jumpers_found": true,
+  "no_other_functions": false,
+  "lock_category": true,
+  "counter_category": true,
+  "next_is_c2c": true
+ },
+ "notes": {
+  "listed": {
+   "ring_lock_acquire": "lock_spin",
+   "batch_commit": "shared_counter",
+   "native_queued_spin_lock_slowpath": "lock_spin"
+  },
+  "extra_functions": [
+   "native_queued_spin_lock_slowpath"
+  ],
+  "next_measurement": "On the production host (install linux-perf there; it is not available here), run `perf c2c record -g -- ingestd --replay <capture> --threads 32` then `perf c2c report --stdio --sort=tot_hitm`. Expect the top HITM lines to be the struct ring line (lock/head/tail, accessors ring_lock_acquire, ring_pop"
+ }
+}

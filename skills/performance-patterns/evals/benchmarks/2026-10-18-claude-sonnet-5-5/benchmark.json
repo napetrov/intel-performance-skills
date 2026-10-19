@@ -1,0 +1,507 @@
+{
+  "metadata": {
+    "skill_name": "performance-patterns",
+    "skill_path": "skills/performance-patterns",
+    "executor_model": "claude-sonnet-5-5",
+    "executor_model_id": "us.anthropic.claude-sonnet-5-5",
+    "timestamp": "2026-10-18T22:29:27.961143",
+    "evals_run": [
+      "pp-crc32c-throughput",
+      "pp-hamming-search"
+    ],
+    "runs_per_configuration": 3,
+    "skill_behavior_sha256": "a1016a874b6fc948f576af2dea42926ab2e2f4ed6edd31c231abf605d80167dc",
+    "harness": "harbor 0.24.0",
+    "agent": "claude-code",
+    "agent_version": "2.1.296",
+    "repo_commit": "3e33aecabb956ec48526b3f842f4f70ae96d98ff",
+    "results": "evaluation/harbor/results/2026-10-18-sonnet55-performance-patterns"
+  },
+  "runs": [
+    {
+      "eval_id": 1,
+      "eval_name": "pp-crc32c-throughput",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "trial": "pp-crc32c-throughput__5Y5TyQa",
+      "result": {
+        "pass_rate": 0.75,
+        "passed": 3,
+        "failed": 1,
+        "total": 4,
+        "time_seconds": 38.381935,
+        "tokens": 95037,
+        "tool_calls": null,
+        "errors": 0,
+        "cost_usd": 0.0640664
+      },
+      "expectations": [
+        {
+          "text": "builds",
+          "passed": true
+        },
+        {
+          "text": "correct",
+          "passed": true
+        },
+        {
+          "text": "dispatch",
+          "passed": true
+        },
+        {
+          "text": "fast",
+          "passed": false
+        }
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "pp-crc32c-throughput",
+      "configuration": "without_skill",
+      "run_number": 2,
+      "trial": "pp-crc32c-throughput__iuDTd4d",
+      "result": {
+        "pass_rate": 0.75,
+        "passed": 3,
+        "failed": 1,
+        "total": 4,
+        "time_seconds": 38.171956,
+        "tokens": 94600,
+        "tool_calls": null,
+        "errors": 0,
+        "cost_usd": 0.0630477
+      },
+      "expectations": [
+        {
+          "text": "builds",
+          "passed": true
+        },
+        {
+          "text": "correct",
+          "passed": true
+        },
+        {
+          "text": "dispatch",
+          "passed": true
+        },
+        {
+          "text": "fast",
+          "passed": false
+        }
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "pp-crc32c-throughput",
+      "configuration": "without_skill",
+      "run_number": 3,
+      "trial": "pp-crc32c-throughput__qe5mzw7",
+      "result": {
+        "pass_rate": 0.75,
+        "passed": 3,
+        "failed": 1,
+        "total": 4,
+        "time_seconds": 39.249244,
+        "tokens": 94715,
+        "tool_calls": null,
+        "errors": 0,
+        "cost_usd": 0.1107394
+      },
+      "expectations": [
+        {
+          "text": "builds",
+          "passed": true
+        },
+        {
+          "text": "correct",
+          "passed": true
+        },
+        {
+          "text": "dispatch",
+          "passed": true
+        },
+        {
+          "text": "fast",
+          "passed": false
+        }
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "pp-hamming-search",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "trial": "pp-hamming-search__GvyNov5",
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 43.48181,
+        "tokens": 118732,
+        "tool_calls": null,
+        "errors": 0,
+        "cost_usd": 0.0741281
+      },
+      "expectations": [
+        {
+          "text": "builds",
+          "passed": true
+        },
+        {
+          "text": "correct",
+          "passed": true
+        },
+        {
+          "text": "dispatch",
+          "passed": true
+        },
+        {
+          "text": "fast",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "pp-hamming-search",
+      "configuration": "without_skill",
+      "run_number": 2,
+      "trial": "pp-hamming-search__WL6LfN2",
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 29.481735,
+        "tokens": 92372,
+        "tool_calls": null,
+        "errors": 0,
+        "cost_usd": 0.052506399999999995
+      },
+      "expectations": [
+        {
+          "text": "builds",
+          "passed": true
+        },
+        {
+          "text": "correct",
+          "passed": true
+        },
+        {
+          "text": "dispatch",
+          "passed": true
+        },
+        {
+          "text": "fast",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "pp-hamming-search",
+      "configuration": "without_skill",
+      "run_number": 3,
+      "trial": "pp-hamming-search__sKYzVgv",
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 27.00974,
+        "tokens": 90653,
+        "tool_calls": null,
+        "errors": 0,
+        "cost_usd": 0.054811900000000004
+      },
+      "expectations": [
+        {
+          "text": "builds",
+          "passed": true
+        },
+        {
+          "text": "correct",
+          "passed": true
+        },
+        {
+          "text": "dispatch",
+          "passed": true
+        },
+        {
+          "text": "fast",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "pp-crc32c-throughput",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "trial": "pp-crc32c-throughput__KRJikBu",
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 33.595837,
+        "tokens": 185718,
+        "tool_calls": null,
+        "errors": 0,
+        "cost_usd": 0.0834941
+      },
+      "expectations": [
+        {
+          "text": "builds",
+          "passed": true
+        },
+        {
+          "text": "correct",
+          "passed": true
+        },
+        {
+          "text": "dispatch",
+          "passed": true
+        },
+        {
+          "text": "fast",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "pp-crc32c-throughput",
+      "configuration": "with_skill",
+      "run_number": 2,
+      "trial": "pp-crc32c-throughput__NB9qUJ7",
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 25.258589,
+        "tokens": 126949,
+        "tool_calls": null,
+        "errors": 0,
+        "cost_usd": 0.06056840000000001
+      },
+      "expectations": [
+        {
+          "text": "builds",
+          "passed": true
+        },
+        {
+          "text": "correct",
+          "passed": true
+        },
+        {
+          "text": "dispatch",
+          "passed": true
+        },
+        {
+          "text": "fast",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "pp-crc32c-throughput",
+      "configuration": "with_skill",
+      "run_number": 3,
+      "trial": "pp-crc32c-throughput__bfkwmDD",
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 35.519677,
+        "tokens": 176581,
+        "tool_calls": null,
+        "errors": 0,
+        "cost_usd": 0.0902308
+      },
+      "expectations": [
+        {
+          "text": "builds",
+          "passed": true
+        },
+        {
+          "text": "correct",
+          "passed": true
+        },
+        {
+          "text": "dispatch",
+          "passed": true
+        },
+        {
+          "text": "fast",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "pp-hamming-search",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "trial": "pp-hamming-search__FkZUgRK",
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 30.318253,
+        "tokens": 100656,
+        "tool_calls": null,
+        "errors": 0,
+        "cost_usd": 0.0692459
+      },
+      "expectations": [
+        {
+          "text": "builds",
+          "passed": true
+        },
+        {
+          "text": "correct",
+          "passed": true
+        },
+        {
+          "text": "dispatch",
+          "passed": true
+        },
+        {
+          "text": "fast",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "pp-hamming-search",
+      "configuration": "with_skill",
+      "run_number": 2,
+      "trial": "pp-hamming-search__WAgXNLN",
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 37.098692,
+        "tokens": 140356,
+        "tool_calls": null,
+        "errors": 0,
+        "cost_usd": 0.08578820000000001
+      },
+      "expectations": [
+        {
+          "text": "builds",
+          "passed": true
+        },
+        {
+          "text": "correct",
+          "passed": true
+        },
+        {
+          "text": "dispatch",
+          "passed": true
+        },
+        {
+          "text": "fast",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "pp-hamming-search",
+      "configuration": "with_skill",
+      "run_number": 3,
+      "trial": "pp-hamming-search__imiPTjm",
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 38.331882,
+        "tokens": 169108,
+        "tool_calls": null,
+        "errors": 0,
+        "cost_usd": 0.0920632
+      },
+      "expectations": [
+        {
+          "text": "builds",
+          "passed": true
+        },
+        {
+          "text": "correct",
+          "passed": true
+        },
+        {
+          "text": "dispatch",
+          "passed": true
+        },
+        {
+          "text": "fast",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "run_summary": {
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.875,
+        "stddev": 0.1369,
+        "min": 0.75,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 35.9627,
+        "stddev": 6.3282,
+        "min": 27.00974,
+        "max": 43.48181
+      },
+      "tokens": {
+        "mean": 97684.8333,
+        "stddev": 10449.9113,
+        "min": 90653,
+        "max": 118732
+      }
+    },
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 33.3538,
+        "stddev": 4.8642,
+        "min": 25.258589,
+        "max": 38.331882
+      },
+      "tokens": {
+        "mean": 149894.6667,
+        "stddev": 32883.3084,
+        "min": 100656,
+        "max": 185718
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.12",
+      "time_seconds": "-2.61",
+      "tokens": "+52209.83"
+    }
+  },
+  "notes": [
+    "Harbor tasks in evaluation/harbor/tasks/, graded by each task's tests/verify.py; full trials and tables in evaluation/harbor/results/2026-10-18-sonnet55-performance-patterns/.",
+    "pass_rate is the share of a run's verifier checks that passed; the task's reward is 1 only when all of them pass.",
+    "pp-crc32c-throughput: reward 0.0 without the skill, 1.0 with it",
+    "pp-hamming-search: reward 1.0 without the skill, 1.0 with it"
+  ]
+}

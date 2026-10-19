@@ -1,0 +1,28 @@
+{
+ "checks": {
+  "report_written": true,
+  "top_table": true,
+  "top_table_cutoff": false,
+  "annotated_hot_line": false,
+  "annotated_second_function": false,
+  "serial_accumulator": true,
+  "scalar_fp": true,
+  "false_sharing": true,
+  "no_fix_claims": true,
+  "sources_untouched": true
+ },
+ "notes": {
+  "top_table": [
+   "| Rank | Where | Share of cycles | Nature |",
+   "|---|---|---|---|",
+   "| 1 | `accumulate_scores` (`score.c:15-16`) | 58.42% | Scalar floating-point dot product with one serial accumulator |",
+   "| 2 | `worker_update_stats` (`worker.c:34-35`) | 18.77% | False sharing: all four workers write one 64-byte cache line on every candidate |",
+   "| 3 | `__memmove_avx_unaligned_erms` (libc) | 7.11% | Large copies; **caller unknown** |",
+   "| 4 | Parse / read / allocation (`parse_record`, `read_block`, malloc/free, strtod, page clearing) | about 11% combined | Unknown source; not analyzed |",
+   "| 5 | Queue and lock contention (`next_block`, futex, spinlock, context switches) | about 3% of cycles plus scheduling overhead | Secondary contention |"
+  ],
+  "fix_claim": null,
+  "regime_mentions_memory_bound": false,
+  "changed_sources": []
+ }
+}

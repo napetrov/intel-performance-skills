@@ -1,0 +1,18 @@
+{
+ "checks": {
+  "builds": true,
+  "correct": true,
+  "dispatch": true,
+  "single_thread": true,
+  "fast": true
+ },
+ "notes": {
+  "build_tail": "ts/isolate-isa-symbols.sh icl '^_ZN3xss6avx512|^_ZN3xss8fp16_icl|^DW\\.ref\\.' third_party/x86-simd-sort/obj/x86simdsort-icl.o\ng++ -O3 -std=c++17 -march=sapphirerapids -Ithird_party/x86-simd-sort/lib -Ithird_party/x86-simd-sort/src -c third_party/x86-simd-sort/lib/x86simdsort-spr.cpp -o third_party/x86-simd-sort/obj/x86simdsort-spr.o\nsh scripts/isolate-isa-symbols.sh spr '^_ZN3xss8fp16_spr|^DW\\.ref\\.' third_party/x86-simd-sort/obj/x86simdsort-spr.o\nar rcs libranker.a ranker.o third_party/x86-simd-sort/obj/x86simdsort.o third_party/x86-simd-sort/obj/x86simdsort-avx2.o third_party/x86-simd-sort/obj/x86simdsort-skx.o third_party/x86-simd-sort/obj/x86simdsort-icl.o third_party/x86-simd-sort/obj/x86simdsort-spr.o\ng++ -O2 -g -std=c++17 bench.cpp libranker.a -o bench\nmake: Leaving directory '/app'\n",
+  "check": "CHECK OK\n",
+  "agent_melems": 261.59,
+  "ref_melems": 12.34,
+  "ratio": 21.2,
+  "gate": 12.0,
+  "cpu_over_wall": 1.001
+ }
+}
