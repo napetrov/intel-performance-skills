@@ -1,7 +1,5 @@
 local.md
 *workspace
-# skill-creator scratch; committed results live in evals/benchmarks/
-**/evals/*
-!**/evals/benchmarks/
+evals/
 evaluation/harbor/jobs/
 __pycache__/

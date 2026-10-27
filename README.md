@@ -42,7 +42,6 @@ Once installed, you can talk to the agent naturally. A few examples:
 | `skills/linux-perf/` | Data collection skill: `perf` workflows, building blocks, hotspot reporting |
 | `skills/performance-patterns/` | Pattern detection and fix playbooks: source code and profiling signals |
 | `skills/phoronix-test-suite/` | Supporting skill: install, run, and optimize PTS benchmarks |
-| `skills/<name>/evals/benchmarks/` | Measured results per model (skill-creator `benchmark.json`) |
 | `evaluation/harbor/` | Harbor tasks that measure the skills: with vs without, same agent and model |
 
 ---
@@ -121,9 +120,7 @@ tasks in [`evaluation/harbor/`](evaluation/harbor/): the same agent and model so
 task without and with the skill, and a verifier grades the result. On Claude Haiku 5.5 and
 Sonnet 5.5, the skills turn a fast CRC32C (0/8 → 8/8 passes) and a hotspot report with
 source-line attribution (2/8 → 8/8) from failures into passes. Tasks, method and the full
-table: [`evaluation/harbor/README.md`](evaluation/harbor/README.md). Per-trial evidence:
-[`evaluation/harbor/results/`](evaluation/harbor/results/); per-skill summaries in
-`skills/<name>/evals/benchmarks/`.
+table: [`evaluation/harbor/README.md`](evaluation/harbor/README.md).
 
 ---
 

@@ -29,9 +29,13 @@ description gets it loaded. The layout and arm design follow
   measured on the reference host (Xeon Platinum 8480+, Sapphire Rapids). The gate
   is relaxed on CPUs without the relevant ISA; see each `tests/verify.py`.
 - **Conventions are recorded, not rewarded.** A check for something the skill
-  prefers but the instruction does not ask for (Flow E's 5% table cutoff, TTAS as
-  the only acceptable lock fix) is listed in `INFORMATIONAL` in its `verify.py`:
+  prefers but the instruction does not ask for (Flow E's 5% table cutoff in the hotspot
+  report, TTAS as the only acceptable lock fix) is listed in `INFORMATIONAL` in its `verify.py`:
   written to `reward.json`, left out of `reward`.
+  Two tasks do put an unstated skill convention into `reward`: `lp-c2c-contention`
+  grades the list of lines against the skill's 5% Tot Hitm cutoff, and
+  `lp-scaling-bottleneck` requires `perf c2c` as the next measurement. Their results
+  say whether the agent follows the skill, not only whether the answer is defensible.
 - **No live `perf`.** linux-perf tasks ship recorded `perf stat` / `report` /
   `annotate` / `c2c` output (synthetic, with no real host names or paths), so no
   task needs a privileged container, `CAP_PERFMON` or `perf_event_open`.
@@ -52,15 +56,28 @@ description gets it loaded. The layout and arm design follow
 
 ## Running
 
+The tasks are plain Harbor tasks; this directory ships no runner. Run them with
+`harbor` directly, or with intel/skills' [`tools/compare_harbor_skill.py`](https://github.com/intel/skills/blob/main/tools/compare_harbor_skill.py),
+which runs the arms and computes the delta.
+
 ```bash
+export HARBOR_TELEMETRY=off
 # credentials for Bedrock: CLAUDE_CODE_USE_BEDROCK=1, AWS_REGION, AWS_BEARER_TOKEN_BEDROCK
-HARBOR_TELEMETRY=off harbor run -p evaluation/harbor/tasks -a oracle -o evaluation/harbor/jobs \
-    --job-name oracle --yes                                    # every task must score 1.0
-evaluation/harbor/run_arms.sh performance-patterns <model> 3   # both arms, all its tasks
-TASKS="pp-crc32c-throughput" evaluation/harbor/run_arms.sh performance-patterns <model> 3
-python3 evaluation/harbor/report.py evaluation/harbor/jobs/<prefix>-<skill>-{no_skill,with_skill} \
-    --out evaluation/harbor/results/<prefix>-<skill>       # also writes skills/<skill>/evals/benchmarks/
+harbor run -p evaluation/harbor/tasks -a oracle --yes            # every task must score 1.0
+
+# both arms of one skill: same flags, only --skill and the treatment instruction differ
+common=(-p evaluation/harbor/tasks -i pp-crc32c-throughput -k 3 -a claude-code -m <model>
+  --ak version=2.1.296 --ak config=evaluation/harbor/claude-settings.json
+  --ak disable_web_search=true --ae CLAUDE_CODE_DISABLE_BUNDLED_SKILLS=1
+  --ae CLAUDE_CODE_DISABLE_CLAUDE_API_SKILL=1 --yes)
+harbor run "${common[@]}" --job-name no_skill
+harbor run "${common[@]}" --job-name with_skill --skill skills/performance-patterns \
+  --extra-instruction-path evaluation/harbor/instructions/use-performance-patterns.md
 ```
+
+A task belongs to a skill by `[metadata] skill` in its `task.toml`. `claude-settings.json`
+turns the bundled Claude Code plugins off in both arms and caps the skill listing, so
+the skill under test is the only one the `with_skill` agent sees.
 
 ## Results — 2026-10-18
 
@@ -78,13 +95,12 @@ No trial errored.
 | | Sonnet | 3/3 | 3/3 | ceiling: Sonnet finds VPOPCNTDQ without the skill |
 | pp-source-review | Haiku | 2/3 | 3/3 | recall 7.0 → 9.3 of 10; `restrict` found 0/3 → 3/3; the 4-accumulator decoy flagged 2/3 → 0/3 |
 | pp-simd-sort | Haiku | 1/3 | 2/3 | with_skill reaches x86-simd-sort (21x) in 2/3, no_skill once (23x); the other attempts reach 6–9x |
-| lp-c2c-contention | Haiku | 0/3 | 2/3 | classification and fixes equal in both arms; only the 5% threshold separates them |
+| lp-c2c-contention | Haiku | 0/3 | 2/3 | classification equal in both arms; the reward separates them on the 5% Tot Hitm cutoff, and the informational TTAS lock fix is 1/3 → 3/3 |
 | lp-scaling-bottleneck | Haiku | 2/3 | 2/3 | ceiling: both arms find the two jumping functions and pick `perf c2c` |
 
-Per-trial evidence (Harbor's `result.json`, each verifier's `reward.json` and output)
-and generated tables are in [`results/<date>-<model>-<skill>/`](results/); the same runs
-in skill-creator's schema are in `skills/<skill>/evals/benchmarks/<date>-<model>/benchmark.json`,
-where catalogs look for them. Re-graded trials keep Harbor's originals as `*.harbor.*`.
+Attempts are per task: 5 for the first three tasks on Haiku, 3 elsewhere. The trials
+come from several Harbor jobs per model, run 2026-10-18/19 at the same task revision,
+agent and settings; job outputs are not committed.
 
 The first two rows are the evidence that the skills change outcomes on both models.
 Hamming discriminates for Haiku only. Source review, sort and c2c point the right way
