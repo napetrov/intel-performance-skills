@@ -20,15 +20,28 @@ import json
 import pathlib
 import re
 import subprocess
+import time
 
 APP = pathlib.Path("/app")
 T = pathlib.Path("/tests")
 W = pathlib.Path("/tmp/verify")
 checks, notes = {}, {}
+# Every command shares one budget, kept under task.toml's verifier timeout so
+# reward.json is written before Harbor kills the verifier.
+DEADLINE = time.monotonic() + 270
 
 
-def run(cmd, **kw):
-    return subprocess.run(cmd, capture_output=True, text=True, timeout=240, **kw)
+def run(cmd, timeout=240, **kw):
+    timeout = max(1, min(timeout, DEADLINE - time.monotonic()))
+    try:
+        return subprocess.run(cmd, capture_output=True, text=True, timeout=timeout, **kw)
+    except subprocess.TimeoutExpired:
+        return subprocess.CompletedProcess(cmd, 124, "", f"timed out after {timeout}s")
+
+
+def code(text):
+    """Source text without C/C++ comments, so a comment cannot satisfy a code check."""
+    return re.sub(r"/\*.*?\*/|//[^\n]*", "", text, flags=re.S)
 
 
 def flags():
@@ -43,7 +56,7 @@ def gate_for(f):
     return 1.4 if "avx2" in f else 1.2
 
 
-def main():
+def grade():
     W.mkdir(parents=True, exist_ok=True)
     b = run(["make", "-C", str(APP), "clean", "all"])
     lib = APP / "libhamming.a"
@@ -62,7 +75,7 @@ def main():
         src = " ".join(p.read_text(errors="ignore") for p in APP.glob("*.[ch]"))
         checks["dispatch"] = bool(
             re.search(r"__cpu_model|__cpu_indicator_init|__cpu_features2|\bi\s+\w*hamming", nm)
-            or re.search(r"__builtin_cpu_supports|target_clones|__get_cpuid|cpuid", src))
+            or re.search(r"__builtin_cpu_supports|target_clones|__get_cpuid|cpuid", code(src)))
         a = run(["gcc", "-O2", str(T / "harness.c"), str(lib), "-o", str(W / "agent")])
         r_ = run(["gcc", "-O2", str(T / "harness.c"), str(T / "ref_popcnt.c"), "-o", str(W / "ref")])
         if a.returncode == 0 and r_.returncode == 0:
@@ -77,6 +90,13 @@ def main():
         else:
             checks["fast"] = False
             notes["harness"] = (a.stderr + r_.stderr)[-600:]
+
+
+def main():
+    try:
+        grade()
+    except Exception as e:  # pylint: disable=broad-except  # any grading failure scores 0
+        notes["error"] = repr(e)[-600:]
     required = ["builds", "correct", "dispatch", "fast"]
     rewards = {k: float(checks.get(k, False)) for k in required}
     rewards["reward"] = float(all(checks.get(k, False) for k in required))

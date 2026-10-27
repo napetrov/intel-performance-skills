@@ -20,7 +20,7 @@ cat > /app/ranker.cpp <<'CPP'
 #include "ranker.h"
 
 void sort_scores(float *scores, size_t n) {
-    x86simdsort::qsort(scores, n, /*hasnan=*/false);  // scores are finite
+    x86simdsort::qsort(scores, n, /*hasnan=*/false);  // scores are never NaN
 }
 CPP
 

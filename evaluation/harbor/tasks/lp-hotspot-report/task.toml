@@ -8,7 +8,7 @@ skill = "linux-perf"
 author_name = "Nikolay Petrov"
 author_email = "nikolay.a.petrov@intel.com"
 difficulty = "medium"
-difficulty_explanation = "Recorded perf stat, perf report, annotate and c2c for a solver whose top function is a scalar serial-accumulator dot product and whose second is a per-worker stats update that false-shares one cache line. The report must carry the top-functions table with the 5% cutoff, per-function annotated source with within-function line percentages for both solver functions, and name the scalar, serial-accumulator and false-sharing patterns without claiming fixes."
+difficulty_explanation = "Recorded perf stat, perf report, annotate and c2c for a solver whose top function is a scalar serial-accumulator dot product and whose second is a per-worker stats update that false-shares one cache line. The report must carry the top-functions table (its 5% cutoff is recorded, not required), per-function annotated source with within-function line percentages for both solver functions, and name the scalar, serial-accumulator and false-sharing patterns without claiming fixes."
 category = "performance"
 tags = ["linux-perf", "hotspot-report", "perf-annotate", "serial-accumulator", "false-sharing", "artifact-analysis"]
 

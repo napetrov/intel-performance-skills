@@ -8,7 +8,7 @@ Constraints:
 
 - Keep the signature `void sort_scores(float *scores, size_t n)` and the result:
   the array sorted ascending, element-for-element equal to what `std::sort` gives.
-  Scores are finite floats (no NaN) and the array can have any length. Stability
+  Scores are floats, possibly ±inf but never NaN, and the array can have any length. Stability
   does not matter.
 - `make -C /app` must still build `/app/libranker.a` (the library other services
   link) and `/app/bench`. You may add source files and change the `Makefile`.

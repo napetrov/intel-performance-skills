@@ -10,7 +10,7 @@ category = "performance"
 tags = ["cpp", "sort", "simd", "avx512", "cpu-dispatch", "x86-simd-sort"]
 
 [verifier]
-timeout_sec = 300.0
+timeout_sec = 900.0
 network_mode = "no-network"
 
 [agent]

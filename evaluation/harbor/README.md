@@ -61,15 +61,16 @@ The tasks are plain Harbor tasks; this directory ships no runner. Run them with
 which runs the arms and computes the delta.
 
 ```bash
+# from the repo root
 export HARBOR_TELEMETRY=off
 # credentials for Bedrock: CLAUDE_CODE_USE_BEDROCK=1, AWS_REGION, AWS_BEARER_TOKEN_BEDROCK
-harbor run -p evaluation/harbor/tasks -a oracle --yes            # every task must score 1.0
+harbor run -p evaluation/harbor/tasks -a oracle -o evaluation/harbor/jobs --yes           # every task must score 1.0
 
 # both arms of one skill: same flags, only --skill and the treatment instruction differ
 common=(-p evaluation/harbor/tasks -i pp-crc32c-throughput -k 3 -a claude-code -m <model>
   --ak version=2.1.296 --ak config=evaluation/harbor/claude-settings.json
   --ak disable_web_search=true --ae CLAUDE_CODE_DISABLE_BUNDLED_SKILLS=1
-  --ae CLAUDE_CODE_DISABLE_CLAUDE_API_SKILL=1 --yes)
+  --ae CLAUDE_CODE_DISABLE_CLAUDE_API_SKILL=1 -o evaluation/harbor/jobs --yes)
 harbor run "${common[@]}" --job-name no_skill
 harbor run "${common[@]}" --job-name with_skill --skill skills/performance-patterns \
   --extra-instruction-path evaluation/harbor/instructions/use-performance-patterns.md
