@@ -27,8 +27,8 @@ Ground truth comes from skills/linux-perf (paths relative to the skill directory
   next_is_c2c
       references/flow-d.md, "Phase 3 -- Focused c2c": after the dual profile, run
       perf c2c and filter to the cache lines the jumpers touch; flow-d's Phase 4 table
-      classifies from that c2c evidence. The next measurement must be perf c2c /
-      HITM cache-line data.
+      classifies from that c2c evidence. Informational: the instruction does not
+      name perf c2c, so this is recorded, not rewarded.
 
 Lenient on symbol decoration ([.], (), +0x..), category case and separators, and the
 wording of next_measurement.

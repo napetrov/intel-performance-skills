@@ -92,7 +92,7 @@ No trial errored.
 | | Sonnet | 3/3 | 3/3 | ceiling: Sonnet finds VPOPCNTDQ without the skill |
 | pp-source-review | Haiku | 2/3 | 3/3 | recall 7.0 → 9.3 of 10; `restrict` found 0/3 → 3/3; the 4-accumulator decoy flagged 2/3 → 0/3 |
 | pp-simd-sort | Haiku | 1/3 | 2/3 | with_skill reaches x86-simd-sort (21x) in 2/3, no_skill once (23x); the other attempts reach 6–9x |
-| lp-c2c-contention | Haiku | 3/3 | 2/3 | ceiling: classification and fixes equal in both arms; informational checks differ: 5% cutoff 0/3 → 2/3, TTAS lock fix 1/3 → 3/3 |
+| lp-c2c-contention | Haiku | 3/3 | 3/3 | ceiling: classification and fixes equal in both arms; informational checks differ: 5% cutoff 0/3 → 2/3, TTAS lock fix 1/3 → 3/3 |
 | lp-scaling-bottleneck | Haiku | 2/3 | 2/3 | ceiling: both arms find the two jumping functions and pick `perf c2c` |
 
 Attempts are per task: 5 for the first three tasks on Haiku, 3 elsewhere. The trials
@@ -104,8 +104,8 @@ Hamming discriminates for Haiku only. Source review and sort point the right way
 at k=3 but are too close to call; c2c and scaling do not discriminate on reward and
 are kept as smoke tasks.
 
-The c2c and scaling rows are re-graded from each trial's `reward.json`, with their
-convention checks informational. Two task bugs were found by reading trials and fixed
+The c2c row is recomputed from each trial's per-check values with its convention
+checks informational; the scaling row is unchanged (every trial passed `next_is_c2c`). Two task bugs were found by reading trials and fixed
 before the numbers above: the sort instruction implied no download was possible (both arms gave up on third-party
 code; re-run after the fix), and the hotspot verifier accepted a source-line
 percentage only when the source text was quoted, not `line 16` / `score.c:16` (all

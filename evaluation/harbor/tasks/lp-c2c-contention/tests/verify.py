@@ -105,10 +105,9 @@ def grade(doc):
     return checks, notes
 
 
-# Recorded, not part of the reward: the skill prefers TTAS for the lock word, but a mutex, sharding
-# or backoff is also a defensible fix the instruction does not rule out.
-# The skill's 5% cutoff and its TTAS-only lock fix are conventions the instruction
-# does not ask for: recorded, not rewarded.
+# Recorded, not rewarded: the skill's 5% cutoff and its TTAS-only lock fix are
+# conventions the instruction does not ask for (a mutex, sharding or backoff is also
+# a defensible lock fix).
 INFORMATIONAL = {"reported_lines", "l2_fix"}
 
 
