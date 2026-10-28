@@ -88,6 +88,10 @@ def grade(doc):
     return checks, notes
 
 
+# The instruction asks what to measure next, not for perf c2c: recorded, not rewarded.
+INFORMATIONAL = {"next_is_c2c"}
+
+
 def main():
     try:
         doc = json.loads(OUT.read_text())
@@ -99,7 +103,7 @@ def main():
     if err:
         notes["error"] = err
     rewards = {k: float(v) for k, v in checks.items()}
-    rewards["reward"] = float(all(checks.values()))
+    rewards["reward"] = float(all(v for k, v in checks.items() if k not in INFORMATIONAL))
     print(json.dumps({"checks": checks, "notes": notes}, indent=1))
     pathlib.Path("/logs/verifier").mkdir(parents=True, exist_ok=True)
     with open("/logs/verifier/reward.json", "w", encoding="utf-8") as fh:

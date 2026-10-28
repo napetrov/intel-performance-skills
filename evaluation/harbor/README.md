@@ -29,13 +29,9 @@ description gets it loaded. The layout and arm design follow
   measured on the reference host (Xeon Platinum 8480+, Sapphire Rapids). The gate
   is relaxed on CPUs without the relevant ISA; see each `tests/verify.py`.
 - **Conventions are recorded, not rewarded.** A check for something the skill
-  prefers but the instruction does not ask for (Flow E's 5% table cutoff in the hotspot
-  report, TTAS as the only acceptable lock fix) is listed in `INFORMATIONAL` in its `verify.py`:
+  prefers but the instruction does not ask for (the 5% cutoff in the hotspot and c2c
+  tasks, TTAS as the only acceptable lock fix, `perf c2c` as the next measurement) is listed in `INFORMATIONAL` in its `verify.py`:
   written to `reward.json`, left out of `reward`.
-  Two tasks do put an unstated skill convention into `reward`: `lp-c2c-contention`
-  grades the list of lines against the skill's 5% Tot Hitm cutoff, and
-  `lp-scaling-bottleneck` requires `perf c2c` as the next measurement. Their results
-  say whether the agent follows the skill, not only whether the answer is defensible.
 - **No live `perf`.** linux-perf tasks ship recorded `perf stat` / `report` /
   `annotate` / `c2c` output (synthetic, with no real host names or paths), so no
   task needs a privileged container, `CAP_PERFMON` or `perf_event_open`.
@@ -51,8 +47,8 @@ description gets it loaded. The layout and arm design follow
 | [`pp-simd-sort`](tasks/pp-simd-sort/) | performance-patterns | speed up a single-threaded sort of 1M floats, self-contained static library | equal to `std::sort`; dispatch; single-threaded; ≥ 12x `std::sort` |
 | [`pp-source-review`](tasks/pp-source-review/) | performance-patterns | review a module for performance problems before shipping | ≥ 7 of 10 seeded issues found by line range; ≤ 1 of 4 decoys flagged |
 | [`lp-hotspot-report`](tasks/lp-hotspot-report/) | linux-perf | a shareable hotspot report from recorded profiles | top-functions table; source-line % for both hot functions; serial accumulator, scalar FP and false sharing named; report-only |
-| [`lp-c2c-contention`](tasks/lp-c2c-contention/) | linux-perf | what to change, from a recorded `perf c2c` report | the lines above 5% Tot Hitm, each classified true/false sharing with fields and fix |
-| [`lp-scaling-bottleneck`](tasks/lp-scaling-bottleneck/) | linux-perf | why a service stops scaling, from 1- and 32-thread profiles | the two functions whose share jumps (not the hottest one), their category, and `perf c2c` next |
+| [`lp-c2c-contention`](tasks/lp-c2c-contention/) | linux-perf | what to change, from a recorded `perf c2c` report | the hot lines classified true/false sharing, with fields and fix |
+| [`lp-scaling-bottleneck`](tasks/lp-scaling-bottleneck/) | linux-perf | why a service stops scaling, from 1- and 32-thread profiles | the two functions whose share jumps (not the hottest one), and their category |
 
 ## Running
 
@@ -96,7 +92,7 @@ No trial errored.
 | | Sonnet | 3/3 | 3/3 | ceiling: Sonnet finds VPOPCNTDQ without the skill |
 | pp-source-review | Haiku | 2/3 | 3/3 | recall 7.0 → 9.3 of 10; `restrict` found 0/3 → 3/3; the 4-accumulator decoy flagged 2/3 → 0/3 |
 | pp-simd-sort | Haiku | 1/3 | 2/3 | with_skill reaches x86-simd-sort (21x) in 2/3, no_skill once (23x); the other attempts reach 6–9x |
-| lp-c2c-contention | Haiku | 0/3 | 2/3 | classification equal in both arms; the reward separates them on the 5% Tot Hitm cutoff, and the informational TTAS lock fix is 1/3 → 3/3 |
+| lp-c2c-contention | Haiku | 3/3 | 2/3 | ceiling: classification and fixes equal in both arms; informational checks differ: 5% cutoff 0/3 → 2/3, TTAS lock fix 1/3 → 3/3 |
 | lp-scaling-bottleneck | Haiku | 2/3 | 2/3 | ceiling: both arms find the two jumping functions and pick `perf c2c` |
 
 Attempts are per task: 5 for the first three tasks on Haiku, 3 elsewhere. The trials
@@ -104,12 +100,13 @@ come from several Harbor jobs per model, run 2026-10-18/19 at the same task revi
 agent and settings; job outputs are not committed.
 
 The first two rows are the evidence that the skills change outcomes on both models.
-Hamming discriminates for Haiku only. Source review, sort and c2c point the right way
-at k=3 but are too close to call; scaling does not discriminate and is kept as a smoke
-task.
+Hamming discriminates for Haiku only. Source review and sort point the right way
+at k=3 but are too close to call; c2c and scaling do not discriminate on reward and
+are kept as smoke tasks.
 
-Two task bugs were found by reading trials and fixed before the numbers above: the
-sort instruction implied no download was possible (both arms gave up on third-party
+The c2c and scaling rows are re-graded from each trial's `reward.json`, with their
+convention checks informational. Two task bugs were found by reading trials and fixed
+before the numbers above: the sort instruction implied no download was possible (both arms gave up on third-party
 code; re-run after the fix), and the hotspot verifier accepted a source-line
 percentage only when the source text was quoted, not `line 16` / `score.c:16` (all
 hotspot trials re-graded from their trajectories).

@@ -5,7 +5,7 @@ skill = "linux-perf"
 author_name = "Nikolay Petrov"
 author_email = "nikolay.a.petrov@intel.com"
 difficulty = "medium"
-difficulty_explanation = "A recorded perf c2c report with six hot lines: false sharing between parser- and flusher-owned stats fields, a shared atomic request counter with a minor read of a neighbouring field, a CAS spinlock word, and three lines below the 5% Tot Hitm threshold (one of them a textbook per-worker false-sharing layout with the most records). Listing sub-threshold lines, calling the counter line false sharing because of the stray offset, or fixing the spinlock with anything but test-and-test-and-set fails."
+difficulty_explanation = "A recorded perf c2c report with six hot lines: false sharing between parser- and flusher-owned stats fields, a shared atomic request counter with a minor read of a neighbouring field, a CAS spinlock word, and three lines below the 5% Tot Hitm threshold (one of them a textbook per-worker false-sharing layout with the most records). Calling the counter line false sharing because of the stray offset fails; listing sub-threshold lines and a spinlock fix other than test-and-test-and-set are recorded, not rewarded."
 category = "performance"
 tags = ["linux-perf", "perf-c2c", "false-sharing", "true-sharing", "hitm", "artifact-analysis"]
 

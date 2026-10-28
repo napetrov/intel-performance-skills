@@ -9,8 +9,8 @@ Ground truth comes from skills/linux-perf (paths relative to the skill directory
       references/flow-c.md, "Phase 2": only lines above the threshold are mapped.
       Above 5%: index 0 (0x5603c1a8e100, 38.71%), 1 (0x5603c1a8e200, 26.04%),
       2 (0x7f3b2c001080, 19.55%). Index 3 (4.12%, the most records and stores in the
-      table, and a textbook per-worker false-sharing layout) and 4, 5 are below it and
-      must not be listed.
+      table, and a textbook per-worker false-sharing layout) and 4, 5 are below it.
+      INFORMATIONAL: the instruction leaves the cut to the agent.
   l0_false / l1_true / l2_true
       references/building-blocks.md, "Building block: c2c access map for a cache line",
       "Step 3 -- Classify": the Offset column is the definitive discriminator; all
@@ -107,7 +107,9 @@ def grade(doc):
 
 # Recorded, not part of the reward: the skill prefers TTAS for the lock word, but a mutex, sharding
 # or backoff is also a defensible fix the instruction does not rule out.
-INFORMATIONAL = {"l2_fix"}
+# The skill's 5% cutoff and its TTAS-only lock fix are conventions the instruction
+# does not ask for: recorded, not rewarded.
+INFORMATIONAL = {"reported_lines", "l2_fix"}
 
 
 def main():
